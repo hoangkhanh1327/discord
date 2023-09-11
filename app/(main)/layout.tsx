@@ -11,7 +11,6 @@ const MainLayout: React.FC<IMainLayout> = ({ children }) => {
                 <NavigationSider />
             </div>
             <main className='md:pl-[72px] h-full'>{children}</main>
-            {children}
         </div>
     );
 };
