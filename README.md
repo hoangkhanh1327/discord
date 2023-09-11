@@ -18,17 +18,19 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+## Using Prisma Commands
 
-To learn more about Next.js, take a look at the following resources:
+To setup and using Prisma:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+-   Check env file and change DATABASE_URL follow your database configs.
+-   DATABASE_URL="mysql://database_user:database_password@HOST:PORT/database_name"
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+After check env file, then run commands below:
 
-## Deploy on Vercel
+-   npx prisma generate => create interface for tables in database.
+-   npx prisma db push => create table into database.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Run Project
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+-   npm run dev: To start project on port 1327, if you want to change default port, edit in package.json file.
+-   npx prisma studio: To start prisma studio on port 5555 to watch nearly action to database.
