@@ -12,7 +12,7 @@ import {
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { useModal } from '@/hooks/use-modal-store';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import { useOrigin } from '@/hooks/use-origin';
 
 export const InviteModal = () => {
@@ -20,12 +20,12 @@ export const InviteModal = () => {
     const origin = useOrigin();
 
     const isModalOpen = isOpen && type === 'invite';
-    const server = data?.server;
+    const { server } = data;
 
     const [copied, setCopied] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const inviteUrl = `${origin}/invite/server/${server?.inviteCode}`;
+    const inviteUrl = `${origin}/invite/${server?.inviteCode}`;
 
     const onCopy = () => {
         navigator.clipboard.writeText(inviteUrl);
@@ -69,6 +69,7 @@ export const InviteModal = () => {
                         <Input
                             className='bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0'
                             value={inviteUrl}
+                            readOnly={true}
                         />
                         <Button disabled={loading} onClick={onCopy} size='icon'>
                             {copied ? (

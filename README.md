@@ -29,6 +29,7 @@ After check env file, then run commands below:
 
 -   npx prisma generate => create interface for tables in database.
 -   npx prisma db push => create table into database.
+-   npx prisma migrate reset => reset all database.
 
 ## Run Project
 
