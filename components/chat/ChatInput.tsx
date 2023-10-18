@@ -9,6 +9,8 @@ import { Input } from '@/components/ui/input';
 import { Plus, Smile } from 'lucide-react';
 import qs from 'query-string';
 import axios from 'axios';
+import { useModal } from '@/hooks/use-modal-store';
+import EmojiPicker from '../EmojiPicker';
 interface IChatInput {
     apiUrl: string;
     query: Record<string, any>;
@@ -21,6 +23,7 @@ const formSchema = z.object({
 });
 
 const ChatInput: React.FC<IChatInput> = ({ apiUrl, query, name, type }) => {
+    const { onOpen } = useModal();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -37,7 +40,7 @@ const ChatInput: React.FC<IChatInput> = ({ apiUrl, query, name, type }) => {
                 url: apiUrl,
                 query,
             });
-            await axios.post(url, values)
+            await axios.post(url, values);
         } catch (error) {
             console.log('error', error);
         }
@@ -55,7 +58,12 @@ const ChatInput: React.FC<IChatInput> = ({ apiUrl, query, name, type }) => {
                                 <div className='relative p-4 pb-6'>
                                     <button
                                         type='button'
-                                        onClick={() => {}}
+                                        onClick={() =>
+                                            onOpen('messageFile', {
+                                                apiUrl,
+                                                query,
+                                            })
+                                        }
                                         className='absolute top-7 left-8 h-[24px] w-[24px] bg-zinc-500 dark:bg-zinc-400 hover:bg-zinc-600 dark:hover:bg-zinc-300 transition rounded-full p-1 flex items-center justify-center'
                                     >
                                         <Plus className='text-white dark:text-[#313338]' />
@@ -71,7 +79,7 @@ const ChatInput: React.FC<IChatInput> = ({ apiUrl, query, name, type }) => {
                                         {...field}
                                     />
                                     <div className='absolute top-7 right-8'>
-                                        <Smile />
+                                        <EmojiPicker />
                                     </div>
                                 </div>
                             </FormControl>
