@@ -1,19 +1,28 @@
+import MediaRoom from '@/components/MediaRoom';
 import ChatHeader from '@/components/chat/ChatHeader';
+import ChatInput from '@/components/chat/ChatInput';
+import ChatMessages from '@/components/chat/ChatMessages';
 import { getOrCreateConversation } from '@/lib/conversation';
 import { currentProfile } from '@/lib/current-profile';
 import { db } from '@/lib/db';
 import { redirectToSignIn } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
-import React from 'react';
+import React, { Fragment } from 'react';
 
 interface IMemberIdPage {
     params: {
         memberId: string;
         serverId: string;
     };
+    searchParams: {
+        video?: boolean;
+    };
 }
 
-const MemberIdPage: React.FC<IMemberIdPage> = async ({ params }) => {
+const MemberIdPage: React.FC<IMemberIdPage> = async ({
+    params,
+    searchParams,
+}) => {
     const profile = await currentProfile();
 
     if (!profile) {
@@ -56,6 +65,34 @@ const MemberIdPage: React.FC<IMemberIdPage> = async ({ params }) => {
                 serverId={params.serverId}
                 type='conversation'
             />
+            {searchParams.video && (
+                <MediaRoom chatId={conversation.id} video={true} audio={true} />
+            )}
+            {!searchParams.video && (
+                <Fragment>
+                    <ChatMessages
+                        member={currentMember}
+                        name={otherMember.profile.name}
+                        chatId={conversation.id}
+                        type='conversation'
+                        apiUrl='/api/direct-messages'
+                        paramKey='conversationId'
+                        paramValue={conversation.id}
+                        socketUrl='/api/socket/direct-messages'
+                        socketQuery={{
+                            conversationId: conversation.id,
+                        }}
+                    />
+                    <ChatInput
+                        name={otherMember.profile.name}
+                        type='conversation'
+                        apiUrl='/api/socket/direct-messages'
+                        query={{
+                            conversationId: conversation.id,
+                        }}
+                    />
+                </Fragment>
+            )}
         </div>
     );
 };
